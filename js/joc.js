@@ -19,27 +19,11 @@ let partidesGuanyades = 0;
 let highscore = 0;
 
 function comencarPartida() {
-    
-    puntsActuals = 0;
-    displayPuntsActuals.textContent = puntsActuals;
-    paraulaActual = [];
+
+    netejarPartida();
 
     paraulaIntroduida = inputParaula.value.toUpperCase();
-    if (!paraulaIntroduida) {
-        alert("Has d’afegir una paraula per poder començar a jugar");
-        return;
-    } else if (/\d/.test(paraulaIntroduida)) {
-        alert("La paraula no pot contenir números"); 
-        return;
-    } else if (paraulaIntroduida.length <= 3) {
-        alert("La paraula ha de contenir més de 3 caràcters");
-        return;
-    } else if (paraulaIntroduida.includes(" ")) {
-        alert("La paraula no pot tenir espais");
-        return;
-    }
-    inputImg.src = "img/penjat_0.jpg";
-    comptador = 0;
+    if (!validarParaulaIntroduida(paraulaIntroduida)) return;
 
     paraulaArray = paraulaIntroduida.split("");
     for (let i = 0; i < paraulaArray.length; i++) {
@@ -47,9 +31,26 @@ function comencarPartida() {
     }
 
     displayParaulaActual.textContent = paraulaActual.join("");
-
+    inputParaula.value = "";
     deshabilitarInput(true);
 
+}
+
+function validarParaulaIntroduida(paraulaIntroduida) {
+    if (!paraulaIntroduida) {
+        alert("Has d’afegir una paraula per poder començar a jugar");
+        return false;
+    } else if (/\d/.test(paraulaIntroduida)) {
+        alert("La paraula no pot contenir números"); 
+        return false;
+    } else if (paraulaIntroduida.length <= 3) {
+        alert("La paraula ha de contenir més de 3 caràcters");
+        return false;
+    } else if (paraulaIntroduida.includes(" ")) {
+        alert("La paraula no pot tenir espais");
+        return false;
+    }
+    return true;
 }
 
 function mostrarParaula() {
@@ -63,10 +64,8 @@ function mostrarParaula() {
 }
 
 function jugarLletra(lletra) {
-    lletra.disabled = true;
-    lletra.style.borderColor = "#FF0000";
-    lletra.style.color = "#FF0000";
 
+    deshabilitarLletra(lletra);
     let lletraJugada = lletra.textContent
     
     if (paraulaArray.includes(lletraJugada)) {
@@ -87,8 +86,7 @@ function jugarLletra(lletra) {
                 displayPartidaHighscore.textContent = new Date().toLocaleString() + " - " + highscore + " punts";
             }
 
-            totalPartides++;
-            displayTotalPartides.textContent = totalPartides;
+            actualitzarTotalPartides();
             partidesGuanyades++;
             displayPartidesGuanyades.textContent = partidesGuanyades;
         }
@@ -100,16 +98,35 @@ function jugarLletra(lletra) {
         if (comptador == 10) {
             displayParaulaActual.textContent = paraulaArray.join("");
             document.getElementById("paraula-actual").style.backgroundColor = "#FF0000";
-            deshabilitarInput(false);
 
-            totalPartides++;
-            displayTotalPartides.textContent = totalPartides;
+            deshabilitarInput(false);
+            actualitzarTotalPartides();
         }
         inputImg.src = "img/penjat_" + comptador + ".jpg";
     }
 
     displayPuntsActuals.textContent = puntsActuals;
 
+}
+
+function netejarPartida() {
+    document.getElementById("paraula-actual").style.backgroundColor = "#c8d1f3";
+    puntsActuals = 0;
+    displayPuntsActuals.textContent = puntsActuals;
+    paraulaActual = [];
+    inputImg.src = "img/penjat_0.jpg";
+    comptador = 0;
+}
+
+function actualitzarTotalPartides(){
+    totalPartides++;
+    displayTotalPartides.textContent = totalPartides;
+}
+
+function deshabilitarLletra(lletra) {
+    lletra.disabled = true;
+    lletra.style.borderColor = "#FF0000";
+    lletra.style.color = "#FF0000";
 }
 
 function deshabilitarInput(valor) {
