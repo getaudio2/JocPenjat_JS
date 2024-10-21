@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Joc penjat</title>
+</head>
+<body>
+    <section class="main-input-section">
+        <input type="password" placeholder="Introdueix una paraula" id="paraula-input">
+        <button onclick="mostrarParaula()">Mostrar</button>
+        <button id="boto-comencar" onclick="comencarPartida()">Començar partida</button>    
+    </section>
+    <section class="paraula-actual-section">
+        <p id="paraula-actual" class="paraula-secreta">Començar partida</p>
+    </section>
+    <section class="panel-juego">
+        <section class="panel-jugador1">
+            <p>JUGADOR 1</p>
+            <p>PUNTS PARTIDES ACTUALS</p>
+            <p id="punts-partides-actuals">0</p>
+            <p>TOTAL PARTIDES</p>
+            <p id="total-partides">0</p>
+            <p>PARTIDES GUANYADES</p>
+            <p id="partides-guanyades">0</p>
+            <p>PARTIDA AMB MÉS PUNTS</p>
+            <p id="partida-highscore">0</p>
+        </section>
+        <section class="imatge-section">
+            <img id="imatge" src="img/penjat_0.jpg" alt="">
+        </section>
+        <section class="panel-jugador2">
+            <p>JUGADOR 2</p>
+            <p>PUNTS PARTIDES ACTUALS</p>
+            <p id="punts-partides-actuals">0</p>
+            <p>TOTAL PARTIDES</p>
+            <p id="total-partides">0</p>
+            <p>PARTIDES GUANYADES</p>
+            <p id="partides-guanyades">0</p>
+            <p>PARTIDA AMB MÉS PUNTS</p>
+            <p id="partida-highscore">0</p>
+        </section>
+    </section>
+    <section class="buttons">
+        <button onclick="jugarLletra(this)" id="boto_1">A</button>
+        <button onclick="jugarLletra(this)" id="boto_2">B</button>
+        <button onclick="jugarLletra(this)" id="boto_3">C</button>
+        <button onclick="jugarLletra(this)" id="boto_4">D</button>
+        <button onclick="jugarLletra(this)" id="boto_5">E</button>
+        <button onclick="jugarLletra(this)" id="boto_6">F</button>
+        <button onclick="jugarLletra(this)" id="boto_7">G</button>
+        <button onclick="jugarLletra(this)" id="boto_8">H</button>
+        <button onclick="jugarLletra(this)" id="boto_9">I</button>
+        <button onclick="jugarLletra(this)" id="boto_10">J</button>
+        <button onclick="jugarLletra(this)" id="boto_11">K</button>
+        <button onclick="jugarLletra(this)" id="boto_12">L</button>
+        <button onclick="jugarLletra(this)" id="boto_13">M</button>
+        <button onclick="jugarLletra(this)" id="boto_14">N</button>
+        <button onclick="jugarLletra(this)" id="boto_15">O</button>
+        <button onclick="jugarLletra(this)" id="boto_16">P</button>
+        <button onclick="jugarLletra(this)" id="boto_17">Q</button>
+        <button onclick="jugarLletra(this)" id="boto_18">R</button>
+        <button onclick="jugarLletra(this)" id="boto_19">S</button>
+        <button onclick="jugarLletra(this)" id="boto_20">T</button>
+        <button onclick="jugarLletra(this)" id="boto_21">U</button>
+        <button onclick="jugarLletra(this)" id="boto_22">V</button>
+        <button onclick="jugarLletra(this)" id="boto_23">W</button>
+        <button onclick="jugarLletra(this)" id="boto_24">X</button>
+        <button onclick="jugarLletra(this)" id="boto_25">Y</button>
+        <button onclick="jugarLletra(this)" id="boto_26">Z</button>
+    </section>
+
+    <script src="js/joc.js"></script>
+</body>
+</html>

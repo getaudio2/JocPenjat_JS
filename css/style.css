@@ -1,0 +1,95 @@
+.buttons {
+    padding: 5px 1px 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttons button{
+    background-color: #cbfc71;
+    border: 1.5px solid black;
+    border-radius: 7px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+.paraula-secreta {
+    text-align: center;
+    text-decoration: none;
+    padding: 10px 10px;
+    font-size: 50px;
+    letter-spacing: 20px;
+    background-color: #c8d1f3;
+    border-radius: 10px;
+    margin: 20px 5px 10px;
+}
+
+#imatge {
+    border: 1px;
+    border-color: red;
+}
+
+.panel-juego {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fbd6d6;
+    font-size: 12px;
+    color: white;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.panel-jugador1 {
+    background-color: #bc5371;
+    padding: 8px;
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 5%;
+}
+
+.panel-jugador2 {
+    background-color: #53bc94;
+    padding: 8px;
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 5%;
+}
+
+.panel-jugador1 > :first-child {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.panel-jugador2 > :first-child {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.imatge-section {
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 5%;
+    object-fit: contain;
+}
+
+.imatge-section img {
+    border-radius: 5%;
+    width: 100%;
+    height: 100%;
+}
+
+.main-input-section {
+    display: flex;
+    justify-content: end;
+}
+
+#boto-comencar {
+    margin-left: 50px;
+    padding: 8px;
+    background-color: #cbfc71;
+    border: 2px solid black;
+    border-radius: 7px;
+}
