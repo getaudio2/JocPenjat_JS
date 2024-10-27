@@ -1,10 +1,10 @@
-.buttons {
+.lletres {
     padding: 5px 1px 10px;
     display: flex;
     justify-content: space-evenly;
 }
 
-.buttons button{
+.lletres button{
     background-color: #cbfc71;
     border: 1.5px solid black;
     border-radius: 7px;

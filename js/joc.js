@@ -2,11 +2,16 @@
 const inputParaula = document.getElementById("paraula-input");
 const inputImg = document.getElementById("imatge");
 const botoComencar = document.getElementById("boto-comencar");
+const botoMostrar = document.getElementById("boto-mostrar");
 const displayParaulaActual = document.getElementById("paraula-actual");
 const displayPuntsActuals = document.getElementById("punts-partides-actuals");
 const displayTotalPartides = document.getElementById("total-partides");
 const displayPartidesGuanyades = document.getElementById("partides-guanyades");
 const displayPartidaHighscore = document.getElementById("partida-highscore");
+const lletresSection = document.getElementById("container-lletres");
+
+botoMostrar.addEventListener("click", mostrarParaula);
+botoComencar.addEventListener("click", comencarPartida);
 
 // Variables locals JS
 let paraulaIntroduida;
@@ -17,6 +22,8 @@ let puntsActuals = 0;
 let totalPartides = 0;
 let partidesGuanyades = 0;
 let highscore = 0;
+let tornJugador = 0;
+let puntsJugadors = [0,0];
 
 function comencarPartida() {
 
@@ -33,6 +40,51 @@ function comencarPartida() {
     displayParaulaActual.textContent = paraulaActual.join("");
     inputParaula.value = "";
     deshabilitarInput(true);
+
+    tornJugador = 0;
+}
+
+function jugarLletra(lletra) {
+
+    deshabilitarLletra(lletra);
+    let lletraJugada = lletra.textContent
+    
+    // Si encerta la lletra
+    if (paraulaArray.includes(lletraJugada)) {
+        for (let i = 0; i < paraulaArray.length; i++) {
+            if (paraulaArray[i] === lletraJugada) {
+                paraulaActual[i] = lletraJugada;
+                puntsActuals++;
+            }
+        }
+        displayParaulaActual.textContent = paraulaActual.join("");
+        
+        // Si encerta la paraula secreta
+        if (paraulaActual.join("") === paraulaArray.join("")) {
+            deshabilitarInput(false);
+            document.getElementById("paraula-actual").style.backgroundColor = "#dcfaa6";
+
+            actualitzarHighscore();
+            actualitzarTotalPartides();
+            actualitzarPartidesGuanyades();
+        }
+    // Si falla la lletra
+    } else {
+        puntsActuals--;
+        if (puntsActuals == -1) puntsActuals = 0;
+
+        comptador++;
+        if (comptador == 10) { // Si ha fallat 10 vegades -> Dibuix de hangman completat
+            displayParaulaActual.textContent = paraulaArray.join("");
+            document.getElementById("paraula-actual").style.backgroundColor = "#FF0000";
+
+            deshabilitarInput(false);
+            actualitzarTotalPartides();
+        }
+        inputImg.src = "img/penjat_" + comptador + ".jpg";
+    }
+
+    displayPuntsActuals.textContent = puntsActuals;
 
 }
 
@@ -63,50 +115,16 @@ function mostrarParaula() {
 
 }
 
-function jugarLletra(lletra) {
+function actualitzarPartidesGuanyades() {
+    partidesGuanyades++;
+    displayPartidesGuanyades.textContent = partidesGuanyades;
+}
 
-    deshabilitarLletra(lletra);
-    let lletraJugada = lletra.textContent
-    
-    if (paraulaArray.includes(lletraJugada)) {
-        for (let i = 0; i < paraulaArray.length; i++) {
-            if (paraulaArray[i] === lletraJugada) {
-                paraulaActual[i] = lletraJugada;
-                puntsActuals++;
-            }
-        }
-        displayParaulaActual.textContent = paraulaActual.join("");
-
-        if (paraulaActual.join("") === paraulaArray.join("")) {
-            deshabilitarInput(false);
-            document.getElementById("paraula-actual").style.backgroundColor = "#dcfaa6";
-
-            if (puntsActuals > highscore) {
-                highscore = puntsActuals;
-                displayPartidaHighscore.textContent = new Date().toLocaleString() + " - " + highscore + " punts";
-            }
-
-            actualitzarTotalPartides();
-            partidesGuanyades++;
-            displayPartidesGuanyades.textContent = partidesGuanyades;
-        }
-    } else {
-        puntsActuals--;
-        if (puntsActuals == -1) puntsActuals = 0;
-
-        comptador++;
-        if (comptador == 10) {
-            displayParaulaActual.textContent = paraulaArray.join("");
-            document.getElementById("paraula-actual").style.backgroundColor = "#FF0000";
-
-            deshabilitarInput(false);
-            actualitzarTotalPartides();
-        }
-        inputImg.src = "img/penjat_" + comptador + ".jpg";
+function actualitzarHighscore() {
+    if (puntsActuals > highscore) {
+        highscore = puntsActuals;
+        displayPartidaHighscore.textContent = new Date().toLocaleString() + " - " + highscore + " punts";
     }
-
-    displayPuntsActuals.textContent = puntsActuals;
-
 }
 
 function netejarPartida() {

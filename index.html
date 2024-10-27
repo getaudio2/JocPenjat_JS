@@ -9,8 +9,8 @@
 <body>
     <section class="main-input-section">
         <input type="password" placeholder="Introdueix una paraula" id="paraula-input">
-        <button onclick="mostrarParaula()">Mostrar</button>
-        <button id="boto-comencar" onclick="comencarPartida()">Començar partida</button>    
+        <button id="boto-mostrar">Mostrar</button>
+        <button id="boto-comencar">Començar partida</button>    
     </section>
     <section class="paraula-actual-section">
         <p id="paraula-actual" class="paraula-secreta">Començar partida</p>
@@ -42,7 +42,7 @@
             <p id="partida-highscore">0</p>
         </section>
     </section>
-    <section class="buttons">
+    <section id="container-lletres" class="lletres">
         <button onclick="jugarLletra(this)" id="boto_1">A</button>
         <button onclick="jugarLletra(this)" id="boto_2">B</button>
         <button onclick="jugarLletra(this)" id="boto_3">C</button>
