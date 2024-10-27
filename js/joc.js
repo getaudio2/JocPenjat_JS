@@ -8,6 +8,12 @@ const displayPuntsActuals = document.getElementById("punts-partides-actuals");
 const displayTotalPartides = document.getElementById("total-partides");
 const displayPartidesGuanyades = document.getElementById("partides-guanyades");
 const displayPartidaHighscore = document.getElementById("partida-highscore");
+const displayPuntsActuals2 = document.getElementById("punts-partides-actuals2");
+const displayTotalPartides2 = document.getElementById("total-partides2");
+const displayPartidesGuanyades2 = document.getElementById("partides-guanyades2");
+const displayPartidaHighscore2 = document.getElementById("partida-highscore2");
+const panelJugador1 = document.getElementById("jugador1");
+const panelJugador2 = document.getElementById("jugador2");
 const lletresSection = document.getElementById("container-lletres");
 
 botoMostrar.addEventListener("click", mostrarParaula);
@@ -22,8 +28,12 @@ let puntsActuals = 0;
 let totalPartides = 0;
 let partidesGuanyades = 0;
 let highscore = 0;
+let totalPartides2 = 0;
+let partidesGuanyades2 = 0;
+let highscore2 = 0;
 let tornJugador = 0;
 let puntsJugadors = [0,0];
+let comboPunts = 0;
 
 function comencarPartida() {
 
@@ -42,6 +52,7 @@ function comencarPartida() {
     deshabilitarInput(true);
 
     tornJugador = 0;
+    canviColorTorn(tornJugador);
 }
 
 function jugarLletra(lletra) {
@@ -51,13 +62,14 @@ function jugarLletra(lletra) {
     
     // Si encerta la lletra
     if (paraulaArray.includes(lletraJugada)) {
+        comboPunts++;
         for (let i = 0; i < paraulaArray.length; i++) {
             if (paraulaArray[i] === lletraJugada) {
                 paraulaActual[i] = lletraJugada;
-                puntsActuals++;
+                puntsJugadors[tornJugador] += comboPunts;
             }
         }
-        displayParaulaActual.textContent = paraulaActual.join("");
+        displayParaulaActual.textContent = paraulaActual.join(""); // Actualitza la paraula secreta
         
         // Si encerta la paraula secreta
         if (paraulaActual.join("") === paraulaArray.join("")) {
@@ -65,15 +77,19 @@ function jugarLletra(lletra) {
             document.getElementById("paraula-actual").style.backgroundColor = "#dcfaa6";
 
             actualitzarHighscore();
-            actualitzarTotalPartides();
             actualitzarPartidesGuanyades();
+            actualitzarTotalPartides();
         }
     // Si falla la lletra
     } else {
-        puntsActuals--;
-        if (puntsActuals == -1) puntsActuals = 0;
+        comboPunts = 0; // Reiniciar el combo de lletres encertades
+        puntsJugadors[tornJugador]--;
+        if (puntsJugadors[tornJugador] == -1) puntsJugadors[tornJugador] = 0;
 
-        comptador++;
+        comptador++; // Actualitzar número d'errors
+        inputImg.src = "img/penjat_" + comptador + ".jpg"; // Actualitzar imatge Hangman
+        tornJugador = (tornJugador == 0) ? 1 : 0; // Canvi de torn
+        canviColorTorn(tornJugador); 
         if (comptador == 10) { // Si ha fallat 10 vegades -> Dibuix de hangman completat
             displayParaulaActual.textContent = paraulaArray.join("");
             document.getElementById("paraula-actual").style.backgroundColor = "#FF0000";
@@ -81,11 +97,20 @@ function jugarLletra(lletra) {
             deshabilitarInput(false);
             actualitzarTotalPartides();
         }
-        inputImg.src = "img/penjat_" + comptador + ".jpg";
     }
 
-    displayPuntsActuals.textContent = puntsActuals;
+    displayPuntsActuals.textContent = puntsJugadors[0];
+    displayPuntsActuals2.textContent = puntsJugadors[1];
+}
 
+function canviColorTorn(torn) {
+    if (torn == 0) {
+        panelJugador1.style.backgroundColor = "#53bc94";
+        panelJugador2.style.backgroundColor = "#bc5371";
+    } else {
+        panelJugador1.style.backgroundColor = "#bc5371";
+        panelJugador2.style.backgroundColor = "#53bc94";
+    }
 }
 
 function validarParaulaIntroduida(paraulaIntroduida) {
@@ -116,29 +141,45 @@ function mostrarParaula() {
 }
 
 function actualitzarPartidesGuanyades() {
-    partidesGuanyades++;
-    displayPartidesGuanyades.textContent = partidesGuanyades;
+    if (puntsJugadors[0] > puntsJugadors[1]) {
+        partidesGuanyades++;
+    } else {
+        partidesGuanyades2++;
+    }
 }
 
 function actualitzarHighscore() {
-    if (puntsActuals > highscore) {
-        highscore = puntsActuals;
+    if (puntsJugadors[0] > highscore) {
+        highscore = puntsJugadors[0];
         displayPartidaHighscore.textContent = new Date().toLocaleString() + " - " + highscore + " punts";
+    }
+    if (puntsJugadors[1] > highscore2) {
+        highscore2 = puntsJugadors[1];
+        displayPartidaHighscore2.textContent = new Date().toLocaleString() + " - " + highscore2 + " punts";
     }
 }
 
 function netejarPartida() {
     document.getElementById("paraula-actual").style.backgroundColor = "#c8d1f3";
-    puntsActuals = 0;
-    displayPuntsActuals.textContent = puntsActuals;
+    puntsJugadors = [0,0];
+    displayPuntsActuals.textContent = 0;
+    displayPuntsActuals2.textContent = 0;
     paraulaActual = [];
     inputImg.src = "img/penjat_0.jpg";
     comptador = 0;
+    comboPunts = 0;
 }
 
 function actualitzarTotalPartides(){
     totalPartides++;
+    totalPartides2++;
     displayTotalPartides.textContent = totalPartides;
+    displayTotalPartides2.textContent = totalPartides2;
+
+    let percentatge = (partidesGuanyades / totalPartides) * 100;
+    displayPartidesGuanyades.textContent = partidesGuanyades + " (" + percentatge.toFixed(2) + "%)";
+    let percentatge2 = (partidesGuanyades2 / totalPartides2) * 100;
+    displayPartidesGuanyades2.textContent = partidesGuanyades2 + " (" + percentatge2.toFixed(2) + "%)";
 }
 
 function deshabilitarLletra(lletra) {
