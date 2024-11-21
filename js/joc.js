@@ -24,13 +24,22 @@ let paraulaIntroduida;
 let paraulaArray;
 let paraulaActual = [];
 let comptador = 0;
-let puntsActuals = 0;
-let totalPartides = 0;
-let partidesGuanyades = 0;
-let highscore = 0;
-let totalPartides2 = 0;
-let partidesGuanyades2 = 0;
-let highscore2 = 0;
+
+const jugador1 = {
+    puntsActuals: 0,
+    totalPartides: 0,
+    partidesGuanyades: 0,
+    highscore: 0,
+    dataHighscore: new Date()
+}
+const jugador2 = {
+    puntsActuals: 0,
+    totalPartides: 0,
+    partidesGuanyades: 0,
+    highscore: 0,
+    dataHighscore: new Date()
+}
+
 let tornJugador = 0;
 let puntsJugadors = [0,0];
 let comboPunts = 0;
@@ -142,20 +151,22 @@ function mostrarParaula() {
 
 function actualitzarPartidesGuanyades() {
     if (puntsJugadors[0] > puntsJugadors[1]) {
-        partidesGuanyades++;
+        jugador1.partidesGuanyades++;
     } else {
-        partidesGuanyades2++;
+        jugador2.partidesGuanyades++;
     }
 }
 
 function actualitzarHighscore() {
-    if (puntsJugadors[0] > highscore) {
-        highscore = puntsJugadors[0];
-        displayPartidaHighscore.textContent = new Date().toLocaleString() + " - " + highscore + " punts";
+    if (puntsJugadors[0] > jugador1.highscore) {
+        jugador1.highscore = puntsJugadors[0];
+        jugador1.dataHighscore = new Date().toLocaleString();
+        displayPartidaHighscore.textContent = jugador1.dataHighscore + " - " + jugador1.highscore + " punts";
     }
-    if (puntsJugadors[1] > highscore2) {
-        highscore2 = puntsJugadors[1];
-        displayPartidaHighscore2.textContent = new Date().toLocaleString() + " - " + highscore2 + " punts";
+    if (puntsJugadors[1] > jugador2.highscore) {
+        jugador2.highscore = puntsJugadors[1];
+        jugador2.dataHighscore = new Date().toLocaleString();
+        displayPartidaHighscore2.textContent = jugador2.dataHighscore + " - " + jugador2.highscore + " punts";
     }
 }
 
@@ -171,15 +182,15 @@ function netejarPartida() {
 }
 
 function actualitzarTotalPartides(){
-    totalPartides++;
-    totalPartides2++;
-    displayTotalPartides.textContent = totalPartides;
-    displayTotalPartides2.textContent = totalPartides2;
+    jugador1.totalPartides++;
+    jugador2.totalPartides++;
+    displayTotalPartides.textContent = jugador1.totalPartides;
+    displayTotalPartides2.textContent = jugador2.totalPartides;
 
-    let percentatge = (partidesGuanyades / totalPartides) * 100;
-    displayPartidesGuanyades.textContent = partidesGuanyades + " (" + percentatge.toFixed(2) + "%)";
-    let percentatge2 = (partidesGuanyades2 / totalPartides2) * 100;
-    displayPartidesGuanyades2.textContent = partidesGuanyades2 + " (" + percentatge2.toFixed(2) + "%)";
+    let percentatge = (jugador1.partidesGuanyades / jugador1.totalPartides) * 100;
+    displayPartidesGuanyades.textContent = jugador1.partidesGuanyades + " (" + percentatge.toFixed(2) + "%)";
+    let percentatge2 = (jugador2.partidesGuanyades / jugador2.totalPartides) * 100;
+    displayPartidesGuanyades2.textContent = jugador2.partidesGuanyades + " (" + percentatge2.toFixed(2) + "%)";
 }
 
 function deshabilitarLletra(lletra) {
