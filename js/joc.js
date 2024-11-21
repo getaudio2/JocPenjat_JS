@@ -20,6 +20,7 @@ botoMostrar.addEventListener("click", mostrarParaula);
 botoComencar.addEventListener("click", comencarPartida);
 
 // Variables locals JS
+const abecedari = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 let paraulaIntroduida;
 let paraulaArray;
 let paraulaActual = [];
@@ -207,6 +208,17 @@ function deshabilitarInput(valor) {
     botoComencar.style.color = (valor == true) ? "#FF0000" : "#000000"
 }
 
+function crearBotons() {
+
+    for (let i = 0; i < abecedari.length; i++) {
+        let nouBoto = document.createElement("button");
+        nouBoto.textContent = abecedari.charAt(i);
+        nouBoto.id = "boto_" + (i + 1);
+        nouBoto.addEventListener("click", () => jugarLletra(this));
+        lletresSection.appendChild(nouBoto);
+    }
+}
+
 function deshabilitarLletres(valor) {
 
     for (let i = 1; i < 27; i++) {
@@ -220,4 +232,5 @@ function deshabilitarLletres(valor) {
 
 }
 
+crearBotons();
 deshabilitarLletres(true);
