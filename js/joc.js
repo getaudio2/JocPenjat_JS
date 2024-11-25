@@ -4,14 +4,15 @@ const inputImg = document.getElementById("imatge");
 const botoComencar = document.getElementById("boto-comencar");
 const botoMostrar = document.getElementById("boto-mostrar");
 const displayParaulaActual = document.getElementById("paraula-actual");
-const displayPuntsActuals = document.getElementById("punts-partides-actuals");
-const displayTotalPartides = document.getElementById("total-partides");
-const displayPartidesGuanyades = document.getElementById("partides-guanyades");
-const displayPartidaHighscore = document.getElementById("partida-highscore");
-const displayPuntsActuals2 = document.getElementById("punts-partides-actuals2");
-const displayTotalPartides2 = document.getElementById("total-partides2");
-const displayPartidesGuanyades2 = document.getElementById("partides-guanyades2");
-const displayPartidaHighscore2 = document.getElementById("partida-highscore2");
+
+// Fem servir querySelectorAll, que ens retorna un array amb
+// els objectes (elements) que compleixen la nostra consulta.
+// En aquest cas, demanem els elements amb el mateix id "#nom-id".
+const displayPuntsActuals = document.querySelectorAll("#punts-partides-actuals");
+const displayTotalPartides = document.querySelectorAll("#total-partides");
+const displayPartidesGuanyades = document.querySelectorAll("#partides-guanyades");
+const displayPartidaHighscore = document.querySelectorAll("#partida-highscore");
+
 const panelJugador1 = document.getElementById("jugador1");
 const panelJugador2 = document.getElementById("jugador2");
 const lletresSection = document.getElementById("container-lletres");
@@ -26,23 +27,19 @@ let paraulaArray;
 let paraulaActual = [];
 let comptador = 0;
 
-const jugador1 = {
-    puntsActuals: 0,
-    totalPartides: 0,
-    partidesGuanyades: 0,
-    highscore: 0,
-    dataHighscore: new Date()
-}
-const jugador2 = {
-    puntsActuals: 0,
-    totalPartides: 0,
-    partidesGuanyades: 0,
-    highscore: 0,
-    dataHighscore: new Date()
+const jugador = {
+    "puntsActuals": 0,
+    "totalPartides": 0,
+    "partidesGuanyades": 0,
+    "highscore": {
+        "punts": 0,
+        "data": new Date()
+    }
 }
 
+const multijugador = [jugador, jugador];
+
 let tornJugador = 0;
-let puntsJugadors = [0,0];
 let comboPunts = 0;
 
 function comencarPartida() {
@@ -76,7 +73,7 @@ function jugarLletra(lletra) {
         for (let i = 0; i < paraulaArray.length; i++) {
             if (paraulaArray[i] === lletraJugada) {
                 paraulaActual[i] = lletraJugada;
-                puntsJugadors[tornJugador] += comboPunts;
+                multijugador[tornJugador]["puntsActuals"] += comboPunts;
             }
         }
         displayParaulaActual.textContent = paraulaActual.join(""); // Actualitza la paraula secreta
@@ -93,8 +90,8 @@ function jugarLletra(lletra) {
     // Si falla la lletra
     } else {
         comboPunts = 0; // Reiniciar el combo de lletres encertades
-        puntsJugadors[tornJugador]--;
-        if (puntsJugadors[tornJugador] == -1) puntsJugadors[tornJugador] = 0;
+        multijugador[tornJugador]["puntsActuals"]--;
+        if (multijugador[tornJugador]["puntsActuals"] == -1) multijugador[tornJugador]["puntsActuals"] = 0;
 
         comptador++; // Actualitzar número d'errors
         inputImg.src = "img/penjat_" + comptador + ".jpg"; // Actualitzar imatge Hangman
@@ -109,8 +106,8 @@ function jugarLletra(lletra) {
         }
     }
 
-    displayPuntsActuals.textContent = puntsJugadors[0];
-    displayPuntsActuals2.textContent = puntsJugadors[1];
+    displayPuntsActuals[0].textContent = multijugador[0]["puntsActuals"];
+    displayPuntsActuals[1].textContent = multijugador[1]["puntsActuals"];
 }
 
 function canviColorTorn(torn) {
@@ -151,31 +148,32 @@ function mostrarParaula() {
 }
 
 function actualitzarPartidesGuanyades() {
-    if (puntsJugadors[0] > puntsJugadors[1]) {
-        jugador1.partidesGuanyades++;
+    if (multijugador[0]["puntsActuals"] > multijugador[1]["puntsActuals"]) {
+        multijugador[0]["partidesGuanyades"]++;
     } else {
-        jugador2.partidesGuanyades++;
+        multijugador[1]["partidesGuanyades"]++;
     }
 }
 
 function actualitzarHighscore() {
-    if (puntsJugadors[0] > jugador1.highscore) {
-        jugador1.highscore = puntsJugadors[0];
-        jugador1.dataHighscore = new Date().toLocaleString();
-        displayPartidaHighscore.textContent = jugador1.dataHighscore + " - " + jugador1.highscore + " punts";
-    }
-    if (puntsJugadors[1] > jugador2.highscore) {
-        jugador2.highscore = puntsJugadors[1];
-        jugador2.dataHighscore = new Date().toLocaleString();
-        displayPartidaHighscore2.textContent = jugador2.dataHighscore + " - " + jugador2.highscore + " punts";
+    for (let i = 0; i < 2; i++) {
+        if (multijugador[i]["puntsActuals"] > multijugador[i]["highscore"]) {
+            multijugador[i]["highscore"] = multijugador[i]["puntsActuals"];
+            multijugador[i]["dataHighscore"] = new Date().toLocaleString();
+            displayPartidaHighscore[i].textContent = multijugador[i]["dataHighscore"]
+                                                    + " - " + multijugador[i]["highscore"]
+                                                    + " punts";
+        }
     }
 }
 
 function netejarPartida() {
     document.getElementById("paraula-actual").style.backgroundColor = "#c8d1f3";
-    puntsJugadors = [0,0];
-    displayPuntsActuals.textContent = 0;
-    displayPuntsActuals2.textContent = 0;
+    //puntsJugadors = [0,0];
+    multijugador[0]["puntsActuals"] = 0;
+    multijugador[1]["puntsActuals"] = 0;
+    displayPuntsActuals[0].textContent = 0;
+    displayPuntsActuals[1].textContent = 0;
     paraulaActual = [];
     inputImg.src = "img/penjat_0.jpg";
     comptador = 0;
@@ -183,15 +181,13 @@ function netejarPartida() {
 }
 
 function actualitzarTotalPartides(){
-    jugador1.totalPartides++;
-    jugador2.totalPartides++;
-    displayTotalPartides.textContent = jugador1.totalPartides;
-    displayTotalPartides2.textContent = jugador2.totalPartides;
-
-    let percentatge = (jugador1.partidesGuanyades / jugador1.totalPartides) * 100;
-    displayPartidesGuanyades.textContent = jugador1.partidesGuanyades + " (" + percentatge.toFixed(2) + "%)";
-    let percentatge2 = (jugador2.partidesGuanyades / jugador2.totalPartides) * 100;
-    displayPartidesGuanyades2.textContent = jugador2.partidesGuanyades + " (" + percentatge2.toFixed(2) + "%)";
+    for (let i = 0; i < 2; i++) {
+        multijugador[i]["totalPartides"]++;
+        displayTotalPartides[i].textContent = multijugador[i]["totalPartides"];
+        let percentatge = (multijugador[i]["partidesGuanyades"] / multijugador[i]["totalPartides"]) * 100;
+        displayPartidesGuanyades[i].textContent = multijugador[i]["partidesGuanyades"]
+                                                + " (" + percentatge.toFixed(2) + "%)";
+    }
 }
 
 function deshabilitarLletra(lletra) {
