@@ -214,7 +214,7 @@ function crearBotons() {
         let nouBoto = document.createElement("button");
         nouBoto.textContent = abecedari.charAt(i);
         nouBoto.id = "boto_" + (i + 1);
-        nouBoto.addEventListener("click", () => jugarLletra(this));
+        nouBoto.addEventListener("click", function () {jugarLletra(this)});
         lletresSection.appendChild(nouBoto);
     }
 }
