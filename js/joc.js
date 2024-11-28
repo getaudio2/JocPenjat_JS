@@ -21,7 +21,6 @@ botoMostrar.addEventListener("click", mostrarParaula);
 botoComencar.addEventListener("click", comencarPartida);
 
 // Variables locals JS
-const abecedari = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 let paraulaIntroduida;
 let paraulaArray;
 let paraulaActual = [];
@@ -37,7 +36,10 @@ const jugador = {
     }
 }
 
-const multijugador = [jugador, jugador];
+const multijugador = [];
+
+multijugador.push(jugador);
+multijugador.push(jugador);
 
 let tornJugador = 0;
 let comboPunts = 0;
@@ -206,27 +208,33 @@ function deshabilitarInput(valor) {
 
 function crearBotons() {
 
-    for (let i = 0; i < abecedari.length; i++) {
-        let nouBoto = document.createElement("button");
-        nouBoto.textContent = abecedari.charAt(i);
-        nouBoto.id = "boto_" + (i + 1);
-        nouBoto.addEventListener("click", function () {jugarLletra(this)});
-        lletresSection.appendChild(nouBoto);
-    }
+    fetch("http://localhost:5500/res/abecedari_cat.json")
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(dada){
+            const abecedari = dada["abecedari"];
+            for (let i = 0; i < abecedari.length; i++) {
+                let nouBoto = document.createElement("button");
+                nouBoto.textContent = abecedari[i];
+                nouBoto.className = "button-game";
+                nouBoto.id = "boto_" + (i + 1);
+                nouBoto.addEventListener("click", function () {jugarLletra(this)});
+                lletresSection.appendChild(nouBoto);
+            }
+
+            deshabilitarLletres(true);
+        });
 }
 
 function deshabilitarLletres(valor) {
+    const llistaBotons = document.querySelectorAll(".lletres > .button-game");
 
-    for (let i = 1; i < 27; i++) {
-        let botoId = "boto_" + i;
-        let boto = document.getElementById(botoId);
+    for (const boto of llistaBotons) {
         boto.disabled = valor;
-
-        boto.style.borderColor = (valor == true) ? "#FF0000" : "#000000"
-        boto.style.color = (valor == true) ? "#FF0000" : "#000000"
+        boto.style.borderColor = (valor == true) ? "#FF0000" : "#000000";
+        boto.style.color = (valor == true) ? "#FF0000" : "#000000";
     }
-
 }
 
 crearBotons();
-deshabilitarLletres(true);
